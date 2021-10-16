@@ -4,13 +4,16 @@ import ContestantCard from './ContestantCard';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Spinner from 'react-bootstrap/Spinner'
 
 const baseURL = "https://6c841112-7c87-47ef-a956-03b6484aa343.mock.pstmn.io/contestants";
 const ContestantPage = () => {
     const [contestants, setContestants] = useState([])
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         axios.get(baseURL).then((result) => {
             setContestants(result.data);
+            setLoading(false);
         }).catch((err) => {
             console.log("Fetching error\n"+err);
         });
@@ -27,14 +30,21 @@ const ContestantPage = () => {
             </Col>
             )
     })
-    return (      
+    return (
             <Container className = "mt-3 p-2">
-                <Row xs={1} md={3}>
-                    
+            {
+                loading ? <Spinner
+                animation="border"
+                role="status"
+                variant = "warning"
+                className = "mt-auto"
+                ></Spinner>:
+                <Row xs={1} sm={2} md={3}>
                         {cards}
-                    
                 </Row>    
-            </Container>
+            
+            }
+            </Container>      
     )
 }
 

@@ -13,7 +13,7 @@ const ContestantCard = ({image,name,dress,id}) => {
     }
 
     return (
-            <div className = "card rounded shadow-lg">
+            <div className = "card rounded shadow">
             <div>
                 <img src={image} style = {imageStyle} alt="" />
             </div>
