@@ -1,17 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 export const contestantState = createSlice({
-    name:"contestant",
-    initialState:{
-        contestantInfo: {},
+  name: "contestant",
+  initialState: {
+    contestantInfo: {},
+  },
+  reducers: {
+    updateInfo: (state, action) => {
+      state.contestantInfo = action.payload;
     },
-    reducers:{
-        updateInfo:(state,action)=>{
-            state.contestantInfo = action.payload
-        },
-    }
-})
+  },
+});
 
-export const { updateInfo } = contestantState.actions
+export const { updateInfo } = contestantState.actions;
 
-export default contestantState.reducer
+export default contestantState.reducer;
