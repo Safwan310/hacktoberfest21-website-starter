@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector} from "react-redux";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import Container from "react-bootstrap/Container"
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import EditIcon from '@mui/icons-material/Edit';
 import Button from 'react-bootstrap/Button'
+import { Form, Modal } from "react-bootstrap";
+import { Controller,useForm } from "react-hook-form";
 
 const ContestantInfo = () => {
   const contestantState = useSelector(
@@ -15,6 +17,8 @@ const ContestantInfo = () => {
   const [contestant, setContestant] = useState({});
   const [loading, setLoading] = useState(true);
   const [voteValue,setVoteValue] = useState(0);
+  const [upVoted,setUpVoted] = useState(false);
+  const [edited,setEdited] = useState(false);
   const baseURL = "https://pmhacktoberfest.herokuapp.com/contestants";
     //"https://6c841112-7c87-47ef-a956-03b6484aa343.mock.pstmn.io/contestants";
   useEffect(() => {
@@ -24,11 +28,14 @@ const ContestantInfo = () => {
         setContestant(result.data);
         setVoteValue(result.data["votes"])
         setLoading(false);
+        if(localStorage.getItem(contestantId)!==null){
+            setUpVoted(true);
+        }
       })
       .catch((err) => {
         console.log("Fetching error\n" + err);
       });
-  }, [voteValue]);
+  }, [upVoted,contestantId,edited]);
 
   const imageStyle = {
     height: "400px",
@@ -37,16 +44,43 @@ const ContestantInfo = () => {
   };
 
   const upVote = () => {
+
     let vote = (contestant.votes-0)+1
-    axios.patch(baseURL+`/${contestantId}/upvote`,{
-      "votes":`${vote}`
-    }).then((result)=>{
-      console.log(result.data)
-      setVoteValue(vote);
-    }).catch((err)=>{
-      console.log("Error at upvote"+err);
-    })
+    if(!upVoted){
+      axios.patch(baseURL+`/${contestantId}/upvote`,{
+        "votes":`${vote}`
+      }).then((result)=>{
+        console.log(result.data)
+        setVoteValue(vote);
+        setUpVoted(true);
+        localStorage.setItem(contestant.id,true);
+      }).catch((err)=>{
+        console.log("Error at upvote"+err);
+      })
+    }
+    else{
+
+    }
   }
+
+  const nameEditor = (data)=> {
+    axios
+    .patch(baseURL+ `/${contestantId}`,data)
+    .then((response)=>{
+      console.log(response.data);
+      setShow(false);
+      setEdited(true);
+    })
+    .catch((err)=>console.log(err));
+  }
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const { control, handleSubmit } = useForm();
+
   return (
     <Container className="p-5">
       {loading ? (
@@ -66,10 +100,78 @@ const ContestantInfo = () => {
                 <h3 align="left">City: {contestant.city}</h3>
             </div>
             <div className="d-flex flex-row flex-md-column">
-                <Button variant="warning" onClick = {upVote}><KeyboardArrowUpIcon/></Button>{' '}
+                <Button variant={upVoted?"warning":""} className="border border-warning" onClick = {upVote}><KeyboardArrowUpIcon/></Button>{' '}
                 <h3 className="p-3">{voteValue}</h3>
-                <Button variant="warning"><KeyboardArrowDownIcon/></Button>{' '}
-            </div>    
+                <Button variant="warning" onClick={handleShow}><EditIcon/></Button>
+            </div>
+            <Modal
+              show={show}
+              onHide={handleClose}
+              backdrop="static"
+              keyboard={false}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Contestant Name</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                <Form.Group className="mb-3">
+                  <Form.Label className="mx-0">New Name</Form.Label>
+                  <Controller 
+                  name="name"
+                  control={control}
+                  defaultValue={contestant.name}
+                  rules={{ required: true }}
+                  render={({ field }) => <Form.Control {...field} />}/>
+                </Form.Group>
+                {/* <Form.Group className="mb-3">
+                <Form.Label>Costume</Form.Label>
+                <Controller 
+                name="costumeTitle"
+                control={control}
+                defaultValue={contestant.costumeTitle}
+                rules={{ required: true }}
+                render={({ field }) => <Form.Control {...field} />}/>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+                <Form.Label>Costume Image URL</Form.Label>
+                <Controller 
+                name="costumeImgUrl"
+                control={control}
+                defaultValue={contestant.costumeImgUrl}
+                rules={{ required: true , pattern: /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/}}
+                render={({ field }) => <Form.Control {...field} />}/>
+            </Form.Group>
+            
+            <Form.Group className="mb-3">
+                <Form.Label>City</Form.Label>
+                <Controller 
+                name="city"
+                control={control}
+                defaultValue={contestant.city}
+                rules={{ required: true }}
+                render={({ field }) => <Form.Control {...field} />}/>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+                <Form.Label>Country</Form.Label>
+                <Controller 
+                name="country"
+                control={control}
+                defaultValue={contestant.country}
+                rules={{ required: true }}
+                render={({ field }) => <Form.Control {...field} />}/>
+            </Form.Group> */}
+                </Form>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  Close
+                </Button>
+                <Button variant="warning" onClick={handleSubmit(nameEditor)}>Edit Name</Button>
+              </Modal.Footer>
+            </Modal>   
         </div>
       )}
     </Container>

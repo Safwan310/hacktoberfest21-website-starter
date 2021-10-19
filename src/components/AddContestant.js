@@ -3,15 +3,17 @@ import { Container, Form } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { useForm,Controller } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 
 const AddContestant = () => {
   const baseURL = "https://pmhacktoberfest.herokuapp.com/contestants";
     //"https://6c841112-7c87-47ef-a956-03b6484aa343.mock.pstmn.io/contestants";
 
   const { control, handleSubmit } = useForm();
-
+  let history = useHistory()
   const contestantAdder = (data) => {
         axios.post(baseURL,data).then((response) => {console.log(response.data)}).catch((err)=>console.log(err));
+        history.push("/");
   };
   return (
     <Container className="p-5">
