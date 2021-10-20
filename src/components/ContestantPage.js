@@ -11,7 +11,6 @@ const baseURL = "https://pmhacktoberfest.herokuapp.com/contestants";
 const ContestantPage = () => {
   const [contestants, setContestants] = useState([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     axios
       .get(baseURL)
@@ -22,7 +21,7 @@ const ContestantPage = () => {
       .catch((err) => {
         console.log("Fetching error\n" + err);
       });
-  }, []);
+  }, [contestants]);
   let cards = contestants.map((contestant) => {
     return (
       <Col className="p-3" key={contestant.id}>
@@ -36,7 +35,8 @@ const ContestantPage = () => {
     );
   });
   return (
-    <Container className="mt-3 p-2">
+    <div> 
+      <Container className="p-2">
       {loading ? (
         <Spinner
           animation="border"
@@ -50,6 +50,7 @@ const ContestantPage = () => {
         </Row>
       )}
     </Container>
+    </div>
   );
 };
 

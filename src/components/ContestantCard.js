@@ -5,7 +5,6 @@ import { updateInfo } from "../reducers/contestantState";
 
 const ContestantCard = ({ image, name, dress, id }) => {
   const dispatch = useDispatch();
-
   const imageStyle = {
     height: "400px",
     width: "100%",

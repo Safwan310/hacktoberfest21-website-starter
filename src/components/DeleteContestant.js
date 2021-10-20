@@ -21,7 +21,7 @@ const DeleteContestant = () => {
         .catch((error) => {console.log(error);})
     }, [deleted])
 
-    function handleDelete(id){
+    let handleDelete = (id)=>{
         axios.delete(`${baseURL}/${id}`).then((response) =>{
             console.log(response.data);
             setDeleted(true);
@@ -30,17 +30,17 @@ const DeleteContestant = () => {
 
     let contestantList = contestants.map((contestant)=>{
         return (
-            <div className="rounded shadow d-flex justify-content-between p-3" key={contestant.id}>
+            <div className="rounded shadow d-flex justify-content-between p-2 p-md-5" key={contestant.id}>
                 <div>
-                    <h3>{contestant.name}</h3>
-                    <h4>{contestant.city},{contestant.country}</h4>
+                    <h3 className="text-start">{contestant.name}</h3>
+                    <h4 className="text-start">{contestant.city},{contestant.country}</h4>
                 </div>
                 <Button variant="warning" onClick = {()=>{handleDelete(contestant.id)}}><DeleteOutlineIcon/></Button>
             </div>
         )
     })
     return (
-        <Container className="p-5">
+        <Container className="p-2 p-md-5">
             {loading ? (
                 <Spinner
             animation="border"

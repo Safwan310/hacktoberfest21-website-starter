@@ -59,7 +59,7 @@ const ContestantInfo = () => {
       })
     }
     else{
-
+      
     }
   }
 
@@ -102,7 +102,7 @@ const ContestantInfo = () => {
             <div className="d-flex flex-row flex-md-column">
                 <Button variant={upVoted?"warning":""} className="border border-warning" onClick = {upVote}><KeyboardArrowUpIcon/></Button>{' '}
                 <h3 className="p-3">{voteValue}</h3>
-                <Button variant="warning" onClick={handleShow}><EditIcon/></Button>
+                <Button variant="" onClick={handleShow}>🎃</Button>
             </div>
             <Modal
               show={show}
@@ -124,52 +124,13 @@ const ContestantInfo = () => {
                   rules={{ required: true }}
                   render={({ field }) => <Form.Control {...field} />}/>
                 </Form.Group>
-                {/* <Form.Group className="mb-3">
-                <Form.Label>Costume</Form.Label>
-                <Controller 
-                name="costumeTitle"
-                control={control}
-                defaultValue={contestant.costumeTitle}
-                rules={{ required: true }}
-                render={({ field }) => <Form.Control {...field} />}/>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-                <Form.Label>Costume Image URL</Form.Label>
-                <Controller 
-                name="costumeImgUrl"
-                control={control}
-                defaultValue={contestant.costumeImgUrl}
-                rules={{ required: true , pattern: /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/}}
-                render={({ field }) => <Form.Control {...field} />}/>
-            </Form.Group>
-            
-            <Form.Group className="mb-3">
-                <Form.Label>City</Form.Label>
-                <Controller 
-                name="city"
-                control={control}
-                defaultValue={contestant.city}
-                rules={{ required: true }}
-                render={({ field }) => <Form.Control {...field} />}/>
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-                <Form.Label>Country</Form.Label>
-                <Controller 
-                name="country"
-                control={control}
-                defaultValue={contestant.country}
-                rules={{ required: true }}
-                render={({ field }) => <Form.Control {...field} />}/>
-            </Form.Group> */}
                 </Form>
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                   Close
                 </Button>
-                <Button variant="warning" onClick={handleSubmit(nameEditor)}>Edit Name</Button>
+                <Button variant="warning" onClick={handleSubmit(nameEditor)}><EditIcon/> Edit Name</Button>
               </Modal.Footer>
             </Modal>   
         </div>
