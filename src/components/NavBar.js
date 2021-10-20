@@ -12,7 +12,7 @@ const NavBar = () => {
           </div>
           
           <Nav className="me-0">
-            <Link to = "/addContestant" className="text-decoration-none">Add Contestant</Link>
+            <Link to = "/addContestant" className="text-decoration-none text-black">+ Add Contestant</Link>
           </Nav>
         </Container>
       </Navbar>
