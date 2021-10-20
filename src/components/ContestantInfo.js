@@ -59,7 +59,7 @@ const ContestantInfo = () => {
       })
     }
     else{
-      
+
     }
   }
 
@@ -92,7 +92,7 @@ const ContestantInfo = () => {
         ></Spinner>
       ) : (
         <div className = "d-flex flex-column flex-md-row align-items-center justify-content-between">
-            <div><img src={contestant.costumeImgUrl} alt="" style={imageStyle}/></div>
+            <div><img src={contestant.costumeImgUrl} alt="" style={imageStyle} className="rounded"/></div>
             <div className="d-flex flex-column justify-content-end">
                 <h3 align="left">Name: {contestant.name}</h3>
                 <h3 align="left">Costume: {contestant.costumeTitle}</h3>
